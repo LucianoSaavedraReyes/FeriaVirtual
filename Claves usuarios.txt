@@ -1,0 +1,15 @@
+Super Usuario:
+superadmin:admin
+
+administrador:
+admin:prueba123
+
+productor:
+productor:prueba123
+
+
+Externo:
+donche:prueba123
+
+
+
