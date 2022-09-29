@@ -40,7 +40,7 @@ class User(AbstractUser):
     rol = models.CharField(max_length=50, choices = ROLES, null=True)
     imagen = models.ImageField(upload_to="Perfil",default='default.png')
     def __str__(self):
-        return f'Perfil de {self.username}'
+        return f'{self.username}'
 
 class Post(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='posts')
@@ -98,4 +98,9 @@ class Notificacion(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     total = fields.IntegerField(default=0)
     post = models.ForeignKey(Post, related_name='Post', on_delete=models.CASCADE)
-    
+
+class Contrato(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fecha_inicio = models.DateField(default=timezone.now)
+    fecha_termino = models.DateField(default=timezone.now)
+    vigencia = models.BooleanField(default=False)

@@ -16,7 +16,7 @@
 </head>
 <body class="container-fluid">
     <nav class="row center-xs middle-xs">
-        <a href="/" class="col-xs-12 col-sm-4 "><li><i class="fas fa-home"></i> Maipo Grande</li></a>
+        <a href="/" class="col-xs-12 col-sm-4 "><li><i class="fas fa-home"></i>Feria Virtual</li></a>
     </nav>
     {% if request.user.is_authenticated %}
         <div class="contenedor-login row end-xs">
@@ -30,6 +30,7 @@
 
             {% endif %}
             {% if request.user.rol == "6" %}
+            <a href="{% url 'gestionContratos' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-user-plus"></i> Gestion de contratos</a>
             <a href="{% url 'register' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-user-plus"></i> Registrar Usuario</a>
             <a href="{% url 'venta' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-search-dollar"></i> Iniciar venta</a>
 

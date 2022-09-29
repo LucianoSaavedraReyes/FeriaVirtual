@@ -1,0 +1,35 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="main row">
+    <table class="tabla col-xs-12">
+
+        <tr class="table tr">
+      
+          <td>Productor</td>
+      
+          <td>Fecha Inicio</td>
+      
+          <td>Fecha Termino</td>
+
+          <td>Vigencia</td>
+        </tr>
+
+        {% for c in cont %} 
+        <tr>
+      
+            <td>{{ c.usuario.username }}</td>
+        
+            <td>{{ c.fecha_inicio }}</td>
+    
+            <td>{{ c.fecha_termino }}</td>
+  
+            <td>{{ c.vigencia }}</td>
+          </tr>
+        {% endfor %}
+      </table>
+</div>
+
+
+{% endblock %}

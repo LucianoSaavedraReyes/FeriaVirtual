@@ -5,7 +5,12 @@
 	text-align: center;
     color: white;
 }
-
+.main{
+    margin: 50px 0;
+}
+.table tr{
+    font-weight: 700;
+}
 .container-fluid{
     background-color: black;
     transition-duration: 1s;

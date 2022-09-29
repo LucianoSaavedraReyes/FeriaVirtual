@@ -1,7 +1,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
-from .models import Producto, User, Post
+from .models import *
 from django.contrib import admin
 from django.db.models.signals import post_save
 from django.dispatch import receiver
@@ -44,3 +44,7 @@ class FormProductos(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ('fruta','variedad','cantidad','precio', 'imagen',)
+class FormContratos(forms.ModelForm):
+    class Meta:
+        model = Contrato
+        fields = ('usuario','fecha_inicio','fecha_termino')

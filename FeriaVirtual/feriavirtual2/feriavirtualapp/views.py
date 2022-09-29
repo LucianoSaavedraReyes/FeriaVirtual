@@ -14,6 +14,28 @@ from transbank.webpay.webpay_plus.transaction import Transaction
 from transbank.error.transbank_error import TransbankError
 from django.contrib.auth import login
 # Create your views here.
+def listaContratos(request):
+    cont = Contrato.objects.all()
+    context ={'cont':cont}
+    return render(request, 'lista-contratos.html', context)
+def gestionContratos(request):
+    return render(request, 'gestion-contratos.html', {})
+def contratos(request):
+    if request.method == 'POST':
+        form = FormContratos(request.POST)
+        if form.is_valid():
+            post = form.save(commit=False)
+            post.username = form.cleaned_data['usuario']
+            post.fecha_inicio = form.cleaned_data['fecha_inicio']
+            post.fecha_termino = form.cleaned_data['fecha_termino']
+            post.vigencia = True
+            post.save()  
+            messages.success(request, f'Contrato para productor {post.username} creado')
+            return redirect('contratos')
+    else:
+        form = FormContratos()
+    context = { 'form': form }
+    return render(request, 'contratos.html', context)
 def post_list(request):
     return render(request, 'post_list.html', {})
 def register(request):

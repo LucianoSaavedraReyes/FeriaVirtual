@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="main">
+
+    
+    <a href="{% url 'contratos' %}"><input type="submit" value="Crear nuevo contrato"></input></a>
+    <a href="{% url 'listaContratos' %}"><input type="submit" value="Lista de contratos"></input></a>
+
+</div>
+
+
+{% endblock %}

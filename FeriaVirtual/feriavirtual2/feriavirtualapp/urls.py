@@ -5,6 +5,9 @@ from django.conf.urls.static import static
 from django.contrib import messages
 from django.contrib.auth.views import LoginView, LogoutView
 urlpatterns = [
+    path('lista-contratos/', views.listaContratos, name='listaContratos'),
+    path('gestion-contratos/', views.gestionContratos, name='gestionContratos'),
+    path('contratos/', views.contratos, name='contratos'),
     path('register/', views.register, name='register'),
     path('registerinterno/', views.registerinterno, name='register-interno'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
