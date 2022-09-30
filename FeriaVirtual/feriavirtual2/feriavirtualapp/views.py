@@ -249,5 +249,5 @@ def terminar(request):
         print(token)
         return render(request, 'terminar.html', {"error":error})   
 def notificar(request):
-    messages.success(request, f'Cliente notificado con exito!.')
+    messages.success(request, f'El cliente ha sido notificado y se ha iniciado una subasta de transporte')
     return render(request, 'notificado.html',) 
