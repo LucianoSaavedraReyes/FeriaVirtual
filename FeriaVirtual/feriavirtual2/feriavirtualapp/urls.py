@@ -22,5 +22,5 @@ urlpatterns = [
     path('terminar/', views.terminar, name='terminar'),
     path('pagar/<int:total>/<int:pk>', views.pagar, name='pagar'),
     path('notificacion/', views.notificacion, name='notificacion'),
-    path('notificar/', views.notificar, name='notificar'),
+    path('notificar/<int:pk>/', views.notificar, name='notificar'),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

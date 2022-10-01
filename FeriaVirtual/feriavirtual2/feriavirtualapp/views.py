@@ -184,7 +184,6 @@ def pagar(request,total,pk):
     try:
         response = Transaction().create(buy_order, session_id, amount, return_url)
         context ={'total':total,"response":response,'noti':noti}
-        
         print(amount)
         return render(request, 'pagar.html', context) 
     except TransbankError as e:
@@ -193,19 +192,16 @@ def pagar(request,total,pk):
         error =e.message
         context ={'total':total,"error":error,}
         return render(request, 'pagar.html', context) 
-
 def pagarsubasta(request,pk):
-    
     post = Post.objects.get(pk=pk)
     parts = post.participantes()
     prods = post.productos()
-
     rel = Relacion.objects.filter(from_post=post).values_list('cantidad_ingresada', flat= True)
     rela = Relacion.objects.filter(from_post=post)
     precio = 0
     for re in rela :
         precio = precio + re.productos.precio
-
+        
     total = precio*post.cantidad_actual
     try:
         noti = Notificacion.objects.get(usuario=post.cliente)
@@ -248,6 +244,10 @@ def terminar(request):
         print(e.message)
         print(token)
         return render(request, 'terminar.html', {"error":error})   
-def notificar(request):
+def notificar(request,pk):
+    post = Post.objects.get(pk=pk)
+    postT = PostTransporte.objects.create()
+    #postT.transportista =
+    
     messages.success(request, f'El cliente ha sido notificado y se ha iniciado una subasta de transporte')
     return render(request, 'notificado.html',) 

@@ -27,6 +27,20 @@ FRUTAS =(
     
     ("21", "Naranja"),
     )
+TAMAÑO =(
+    ("1", "Ligero "),
+    ("2", "Liviano"),
+    ("3", "Semi Liviano"),
+    ("4", "Mediano"),
+    ("5", "Semi esado"),
+    ("6", "Pesado"),
+    ("7", "Extra Pesado"),
+    ("8", "Mega Pesado"),
+    ("9", "Ultra Pesado"),
+    ("10", "Extra Pesado"),
+    ("11", "Giga Pesado"),
+    ("12", "Super Pesado"),
+    )
 class User(AbstractUser):
     ROLES =(
     ("1", "Productor"),
@@ -71,6 +85,36 @@ class Post(models.Model):
     def __str__(self):
         return f'{self.user.username}: {self.contenido}'
 
+class PostTransporte(models.Model):
+    transportista = models.ForeignKey(User, on_delete=models.CASCADE,related_name='postTransporte')
+    productor = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ProductorT')
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteT')
+    tamaño = models.CharField(max_length=50, choices = TAMAÑO, null=True)
+    refrigeracion = models.BooleanField(default=False)
+    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
+    variedad = models.CharField(max_length=50, null=True)
+    cantidad_actual = models.IntegerField(default=0)
+    
+    contenido = models.TextField()
+    imagen = models.ImageField(upload_to="Posts", null=True)
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+    class Meta:
+        ordering = ['-fecha_creacion']
+    def publish(self):
+        self.fecha_publicacion = timezone.now()
+        self.save()
+    def participantes(self):
+        user_ids = Relacion.objects.filter(from_post=self)\
+                            .values_list('to_user_id', flat= True)
+        
+        return User.objects.filter(id__in=user_ids)
+    def productos(self):
+        user_ids = Relacion.objects.filter(from_post=self)\
+                            .values_list('to_user_id', flat= True)
+        return Producto.objects.filter(autor__in=user_ids)
+
+    def __str__(self):
+        return f'{self.user.username}: {self.contenido}'
 class Producto(models.Model):
     
     autor = models.ForeignKey(User, on_delete=models.CASCADE,related_name='producto')
