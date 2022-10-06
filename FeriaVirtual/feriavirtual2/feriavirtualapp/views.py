@@ -1,3 +1,4 @@
+from datetime import datetime
 from django.db.models.aggregates import Count
 from django.db.models.expressions import Exists
 from django.shortcuts import render
@@ -26,12 +27,20 @@ def contratos(request):
         if form.is_valid():
             post = form.save(commit=False)
             post.username = form.cleaned_data['usuario']
-            post.fecha_inicio = form.cleaned_data['fecha_inicio']
-            post.fecha_termino = form.cleaned_data['fecha_termino']
-            post.vigencia = True
-            post.save()  
-            messages.success(request, f'Contrato para productor {post.username} creado')
-            return redirect('contratos')
+            existeuser = User.objects.get(username=post.username)
+            existecont = Contrato.objects.get(usuario=existeuser)
+            if post.username == existecont.usuario.username:
+                messages.error(request, f'Este productor ya tiene un contrato vigente.')
+            else:
+                post.fecha_inicio = form.cleaned_data['fecha_inicio']
+                post.fecha_termino = form.cleaned_data['fecha_termino']
+                if post.fecha_inicio > post.fecha_termino:
+                    messages.error(request, f'La fecha de inicio no puede ser mayor a la de termino del contrato')
+                else:
+                    post.vigencia = True
+                    post.save()
+                    messages.success(request, f'Contrato para productor {post.username} creado')
+                    return redirect('contratos')
     else:
         form = FormContratos()
     context = { 'form': form }
