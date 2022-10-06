@@ -281,7 +281,11 @@ def Solicitud(request):
 def solicitudes(request):
     soli = SolicitudCompra.objects.all()
     soli2= SolicitudCompra.objects.all()
+<<<<<<< HEAD
     soli3= SolicitudCompra.objects.all()
+=======
+    soli4= SolicitudCompra.objects.all()
+>>>>>>> 0db819d319480b011270755012a9358ef25ae58f
     context ={'soli':soli}
     return render(request, 'Solicitudes.html', context)
 
