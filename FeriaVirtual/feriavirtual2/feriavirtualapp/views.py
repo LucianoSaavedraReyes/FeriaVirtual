@@ -281,6 +281,7 @@ def Solicitud(request):
 def solicitudes(request):
     soli = SolicitudCompra.objects.all()
     soli2= SolicitudCompra.objects.all()
+    soli3= SolicitudCompra.objects.all()
     context ={'soli':soli}
     return render(request, 'Solicitudes.html', context)
 
