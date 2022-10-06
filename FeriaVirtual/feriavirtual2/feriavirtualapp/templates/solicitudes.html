@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+<div class="main row">
+    <table class="tabla col-xs-12">
+        <tr class="table tr">
+      
+          <td>usuario </td>
+          <td>fruta</td>
+          <td>variedad</td>
+          <td>cantidad_actual</td>
+          <td>cantidad_necesaria</td>
+          <td>contenido</td>
+          <td>cliente</td>
+          <td>fecha_creacion</td>
+          <td>EstadoSolicitudCompra</td>
+          <td>imagen</td>
+
+        {% for s in soli %} 
+        <tr>
+      
+            <td>{{ s.usuario.username }}</td>
+        
+            <td>{{ s.get_fruta_display }}</td>
+    
+            <td>{{ s.variedad }}</td>
+  
+            <td>{{ s.cantidad_actual }}</td>
+
+            <td>{{ s.cantidad_necesaria }}</td>
+
+            <td>{{ s.contenido }}</td>
+
+            <td>{{ s.cliente }}</td>
+
+            <td>{{ s.fecha_creacion }}</td>
+
+            <td>{{ s.get_EstadoSolicitud_display }}</td>
+
+            <td> <img  src="{{ s.imagen.url }}"> </td>
+
+            <td> <a class="notificar" href=""><input type="submit" value="Aprobar"></a></td>
+        
+          </tr>
+        {% endfor %}
+      </table>
+</div>
+
+
+{% endblock %}

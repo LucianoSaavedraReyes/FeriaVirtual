@@ -4,12 +4,18 @@ superadmin:admin
 administrador:
 admin:prueba123
 
-productor:
+productor: 
 productor:prueba123
 
 
 Externo:
 donche:prueba123
+
+
+
+Interno:
+doncheInt:prueba123
+
 
 
 

@@ -251,3 +251,34 @@ def notificar(request,pk):
     
     messages.success(request, f'El cliente ha sido notificado y se ha iniciado una subasta de transporte')
     return render(request, 'notificado.html',) 
+
+
+def Solicitud(request):
+    if request.method == 'POST':
+        form = FormSolicitud(request.POST, request.FILES)
+        if form.is_valid():
+            SolicitudCompra = form.save(commit=False)
+            SolicitudCompra.usuario = request.user
+            SolicitudCompra.fecha_creacion = timezone.now()
+            SolicitudCompra.imagen = request.FILES['imagen']
+            SolicitudCompra.save()
+            messages.success(request, f'Venta iniciada!')
+            return redirect('/')
+    else:
+        form = FormSolicitud()
+    context = { 'form': form }
+    return render(request, 'Solicitud.html',context)
+
+def solicitudes(request):
+    soli = SolicitudCompra.objects.all()
+    context ={'soli':soli}
+    return render(request, 'Solicitudes.html', context)
+
+
+
+
+
+
+
+
+

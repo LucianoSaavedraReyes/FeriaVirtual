@@ -1,3 +1,4 @@
+from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import fields
@@ -40,6 +41,15 @@ TAMAÑO =(
     ("10", "Extra Pesado"),
     ("11", "Giga Pesado"),
     ("12", "Super Pesado"),
+    )
+EstadoSolicitudCompra =(
+    ("1", "aprobado"),
+    ("2", "rechazado"),
+    ("3", "Pendiente"),
+    ("4", "Completado"),
+    ("5", "Devuelto"),
+    ("6", "Subasta"),
+    ("7", "En camino")
     )
 class User(AbstractUser):
     ROLES =(
@@ -148,3 +158,18 @@ class Contrato(models.Model):
     fecha_inicio = models.DateField(default=timezone.now)
     fecha_termino = models.DateField(default=timezone.now)
     vigencia = models.BooleanField(default=False)
+
+
+class SolicitudCompra(models.Model):
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
+    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
+    variedad = models.CharField(max_length=50, null=True)
+    cantidad_actual = models.IntegerField(default=0)
+    cantidad_necesaria = models.IntegerField(default=0)
+    contenido = models.TextField()
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteSoli')
+    fecha_creacion = models.DateTimeField(default=timezone.now)
+    imagen = models.ImageField(upload_to="Posts", null=True)
+    EstadoSolicitud = models.CharField(max_length=50, null=True, choices=EstadoSolicitudCompra, default='3')
+
+

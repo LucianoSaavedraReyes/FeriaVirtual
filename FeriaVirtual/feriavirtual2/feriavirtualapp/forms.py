@@ -48,3 +48,13 @@ class FormContratos(forms.ModelForm):
     class Meta:
         model = Contrato
         fields = ('usuario','fecha_inicio','fecha_termino')
+
+class FormVenta(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido', 'imagen',)
+
+class FormSolicitud(forms.ModelForm):
+    class Meta:
+        model =  SolicitudCompra
+        fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido','imagen',)
