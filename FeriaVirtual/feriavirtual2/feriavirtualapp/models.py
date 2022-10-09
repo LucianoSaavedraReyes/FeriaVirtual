@@ -67,15 +67,16 @@ class User(AbstractUser):
         return f'{self.username}'
 
 class Post(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE,related_name='posts')
+    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
     fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
     variedad = models.CharField(max_length=50, null=True)
     cantidad_actual = models.IntegerField(default=0)
     cantidad_necesaria = models.IntegerField(default=0)
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='Cliente')
     contenido = models.TextField()
+    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteSoli')
     fecha_creacion = models.DateTimeField(default=timezone.now)
     imagen = models.ImageField(upload_to="Posts", null=True)
+    EstadoSolicitud = models.CharField(max_length=50, null=True, choices=EstadoSolicitudCompra, default='3')
 
     class Meta:
         ordering = ['-fecha_creacion']
@@ -160,16 +161,6 @@ class Contrato(models.Model):
     vigencia = models.BooleanField(default=False)
 
 
-class SolicitudCompra(models.Model):
-    usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
-    variedad = models.CharField(max_length=50, null=True)
-    cantidad_actual = models.IntegerField(default=0)
-    cantidad_necesaria = models.IntegerField(default=0)
-    contenido = models.TextField()
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteSoli')
-    fecha_creacion = models.DateTimeField(default=timezone.now)
-    imagen = models.ImageField(upload_to="Posts", null=True)
-    EstadoSolicitud = models.CharField(max_length=50, null=True, choices=EstadoSolicitudCompra, default='3')
-
+class EstadoPr(models.Model):
+    Estado = models.CharField(max_length=50, null=True, choices=EstadoSolicitudCompra, default='3')
 

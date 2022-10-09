@@ -3,6 +3,7 @@ from django.db.models.aggregates import Count
 from django.db.models.expressions import Exists
 from django.shortcuts import render
 from django.utils import timezone
+from requests import post
 from .models import *
 from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm
@@ -71,9 +72,9 @@ def registerinterno(request):
         form = FormRegistroInterno()
     context = { 'form': form }
     return render(request, 'register-interno.html',context)    
+
 def publicaciones(request):
-    posts = Post.objects.all()
-    
+    posts = Post.objects.filter(EstadoSolicitud= "1")
     context ={'posts':posts}
     return render(request, 'publicaciones.html',context)
 
@@ -263,34 +264,38 @@ def notificar(request,pk):
 
 
 def Solicitud(request):
+
     if request.method == 'POST':
-        form = FormSolicitud(request.POST, request.FILES)
+        form = FormVenta(request.POST, request.FILES)
         if form.is_valid():
-            SolicitudCompra = form.save(commit=False)
-            SolicitudCompra.usuario = request.user
-            SolicitudCompra.fecha_creacion = timezone.now()
-            SolicitudCompra.imagen = request.FILES['imagen']
-            SolicitudCompra.save()
+            post = form.save(commit=False)
+            post.usuario = request.user
+            post.fecha_creacion = timezone.now()
+            post.imagen = request.FILES['imagen']
+            post.save()
             messages.success(request, f'Venta iniciada!')
             return redirect('/')
     else:
-        form = FormSolicitud()
+        form = FormVenta()
     context = { 'form': form }
     return render(request, 'Solicitud.html',context)
 
+
+
+
 def solicitudes(request):
-    soli = SolicitudCompra.objects.all()
-    soli2= SolicitudCompra.objects.all()
-    soli3= SolicitudCompra.objects.all()
-    soli4= SolicitudCompra.objects.all()
-    context ={'soli4':soli4}
+    soli = Post.objects.all()
+    context ={'soli':soli,}
     return render(request, 'Solicitudes.html', context)
 
-
-
-
-
-
-
-
-
+def modificarSolicitud (request, pk):
+    SolicitudPK = Post.objects.get(pk = pk)
+    if request.method == 'POST':
+        mod = FormSolicitudEstado(request.POST, instance = SolicitudPK)
+        if mod.is_valid():
+            SolicitudPK = mod.save(commit=False)
+            SolicitudPK.save()
+            return redirect('/Solicitudes')
+    else:
+        mod = FormSolicitudEstado(instance= SolicitudPK)    
+        return render(request, 'modificarsoli.html', {'mod':mod})

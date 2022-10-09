@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load humanize %}
+{% block content %}
+
+                <div>
+                    <form method="POST" action="">
+                        {% csrf_token %}
+                        {{ mod.as_p }}
+                        <input type="submit" class="btn-mod" value="MODIFICAR">
+                    </form>
+                </div>
+
+
+
+
+
+{% endblock %}

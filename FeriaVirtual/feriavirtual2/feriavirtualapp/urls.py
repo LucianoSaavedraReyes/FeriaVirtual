@@ -25,4 +25,5 @@ urlpatterns = [
     path('notificar/<int:pk>/', views.notificar, name='notificar'),
     path('Solicitud/', views.Solicitud, name='Solicitud'),
     path('Solicitudes/', views.solicitudes, name='Solicitudes'),
+    path('modificarsoli/<int:pk>/', views.modificarSolicitud, name="modificarSolicitud"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

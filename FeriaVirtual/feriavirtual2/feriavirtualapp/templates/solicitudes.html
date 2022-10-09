@@ -39,13 +39,18 @@
             <td>{{ s.get_EstadoSolicitud_display }}</td>
 
             <td> <img  src="{{ s.imagen.url }}"> </td>
-
-            <td> <a class="notificar" href=""><input type="submit" value="Aprobar"></a></td>
+            <td><p class="boton_mod"><a  href="{% url 'modificarSolicitud' s.pk%}">MODIFICAR</a></p></td>
+        <td></p></td>
+          
         
           </tr>
         {% endfor %}
       </table>
 </div>
+
+
+
+  
 
 
 {% endblock %}

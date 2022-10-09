@@ -1,6 +1,7 @@
 
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
+from requests import post
 from .models import *
 from django.contrib import admin
 from django.db.models.signals import post_save
@@ -54,7 +55,8 @@ class FormVenta(forms.ModelForm):
         model = Post
         fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido', 'imagen',)
 
-class FormSolicitud(forms.ModelForm):
+
+class FormSolicitudEstado(forms.ModelForm):
     class Meta:
-        model =  SolicitudCompra
-        fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido','imagen',)
+        model =  Post
+        fields = ('EstadoSolicitud',)
