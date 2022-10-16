@@ -5,7 +5,7 @@
                 <div>
                     <form method="POST" action="">
                         {% csrf_token %}
-                        {{ mod.as_p }}
+                        {{ form.as_p }}
                         <input type="submit" class="btn-mod" value="MODIFICAR">
                     </form>
                 </div>

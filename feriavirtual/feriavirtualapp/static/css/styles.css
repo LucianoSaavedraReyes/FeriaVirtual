@@ -192,6 +192,15 @@ table tr td{
 table tr td img{
     height: 100px;
 }
+.cont-seguimiento{
+    margin: 20% 0;
+}
+.seguimiento-icons i{
+    font-size: 100px;
+}
+.seguimiento-icons p{
+    font-size: 42px;
+}
 @media (min-width: 600px) {
     form {
         margin: 25%;
@@ -224,3 +233,6 @@ table tr td img{
         display: inline-block;
     }
   }
+
+
+  

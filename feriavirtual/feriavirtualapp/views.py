@@ -51,8 +51,7 @@ def contratos(request):
         form = FormContratos()
     context = { 'form': form }
     return render(request, 'contratos.html', context)
-def post_list(request):
-    return render(request, 'post_list.html', {})
+
 def register(request):
     if request.method == 'POST':
         form = FormRegistroUsuario(request.POST)
@@ -78,9 +77,8 @@ def registerinterno(request):
     context = { 'form': form }
     return render(request, 'register-interno.html',context)    
 
-def publicaciones(request):
-    
-    return render(request, 'publicaciones.html',{})
+def seguimiento(request):
+    return render(request, 'seguimiento.html',{})
 
 def ingresarproductos(request):
     if request.method == 'POST':
@@ -298,9 +296,9 @@ def solicitudes(request):
 def modificarSolicitud (request, pk):
     SolicitudPK = Post.objects.get(pk = pk)
     if request.method == 'POST':
-        mod = FormSolicitudEstado(request.POST, instance = SolicitudPK)
-        if mod.is_valid():
-            SolicitudPK = mod.save(commit=False)
+        form = FormSolicitudEstado(request.POST, instance = SolicitudPK)
+        if form.is_valid():
+            SolicitudPK = form.save(commit=False)
             
             SolicitudPK = Post.objects.get(pk = pk)
             topProductores = User.objects.filter(rol='1')
@@ -334,13 +332,13 @@ def modificarSolicitud (request, pk):
                             print(cantidadnecesaria)
                             #cantidad actual ya no seria necesaria
                             SolicitudPK.cantidad_actual = cantidadnecesaria
-                            
+                            SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
 
 
                 except Producto.MultipleObjectsReturned:   
                     prodganadores: topProductos.objects.filter(precio=min_precio)
                     cantidadP = prodganadores.count
-                    SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
+                    
             except Producto.DoesNotExist :   
                 SolicitudPK.EstadoSolicitud = '3'
                 messages.error(request, f'En este momento no hay productores que puedan satisfacer el pedido')
@@ -348,5 +346,6 @@ def modificarSolicitud (request, pk):
             SolicitudPK.save()
             return redirect('/Solicitudes')
     else:
-        mod = FormSolicitudEstado(instance= SolicitudPK)    
-        return render(request, 'modificarsoli.html', {'mod':mod})
+        form = FormSolicitudEstado(instance=SolicitudPK)   
+        context ={'form':form,}
+        return render(request, 'modificarsoli.html', context)
