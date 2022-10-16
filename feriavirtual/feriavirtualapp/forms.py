@@ -32,10 +32,12 @@ class FormRegistroInterno(UserCreationForm):
         model = User
         fields = ['username','email','password1','password2']
         help_texts = {k:"" for k in fields}
+        
+        #Porque hay 2 FormVenta?
 class FormVenta(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido', 'imagen',)
+        fields = ('producto','variedad','cantidad_necesaria','cliente','contenido', 'imagen',)
 
 
 class FormPujarSubasta(forms.Form):
@@ -44,7 +46,7 @@ class FormPujarSubasta(forms.Form):
 class FormProductos(forms.ModelForm):
     class Meta:
         model = Producto
-        fields = ('fruta','variedad','cantidad','precio', 'imagen',)
+        fields = ('producto','variedad','calibre','cantidad','precio', 'imagen',)
 class FormContratos(forms.ModelForm):
     class Meta:
         model = Contrato
@@ -53,7 +55,7 @@ class FormContratos(forms.ModelForm):
 class FormVenta(forms.ModelForm):
     class Meta:
         model = Post
-        fields = ('fruta','variedad','cantidad_necesaria','cliente','contenido', 'imagen',)
+        fields = ('producto','variedad','calibre','cantidad_necesaria','cliente','contenido', 'imagen',)
 
 
 class FormSolicitudEstado(forms.ModelForm):

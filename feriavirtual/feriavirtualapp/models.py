@@ -1,33 +1,37 @@
+from email.policy import default
 from pickle import TRUE
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.db.models import fields
 from django.db.models.fields import related
 from django.utils import timezone
-FRUTAS =(
-    ("1", "Aguacate "),
-    ("2", "Damasco"),
-    ("3", "Piña"),
-    ("4", "Arándano"),
-    ("5", "Plátano"),
-    ("6", "Cereza"),
-    ("7", "Ciruela"),
-    ("8", "Coco"),
+PRODUCTOS =(
+    ("1", "Cerezas "),
+    ("2", "Uvas"),
+    ("3", "Arándanos "),
+    ("4", "Nueces"),
+    ("5", "Manzana"),
+    ("6", "Ciruela"),
+    ("7", "Peras"),
     ("9", "Durazno"),
-    ("10", "Frambuesa"),
-    ("11", "Frutilla "),
+    ("11", "Frutilla"),
     ("12", "Granada"),
     ("13", "Limón"),
     ("14", "Mandarina"),
-    ("15", "Melón"),
+    ("15", "Naranja"),
     ("16", "Sandia "),
-    ("17", "Membrillo"),
+    ("17", "Melón"),
     ("18", "Mora"),
     ("19", "Pera"),
     ("20", "Manzana"),
-    
-    ("21", "Naranja"),
     )
+
+#ATENDIENDO TAMAÑO Y CALIBRE LA FRUTA SE PUEDE CALIFICAR EN:
+CALIBRE =(
+    ("1", "Segunda"),
+    ("2", "Primera"),
+    ("3", "Extra "),
+)
 TAMAÑO =(
     ("1", "Ligero "),
     ("2", "Liviano"),
@@ -68,8 +72,9 @@ class User(AbstractUser):
 
 class Post(models.Model):
     usuario = models.ForeignKey(User, on_delete=models.CASCADE)
-    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
+    producto = models.CharField(max_length=50, choices = PRODUCTOS, null=True)
     variedad = models.CharField(max_length=50, null=True)
+    calibre = models.CharField(max_length=50, choices = CALIBRE, null=True,default=1)
     cantidad_actual = models.IntegerField(default=0)
     cantidad_necesaria = models.IntegerField(default=0)
     contenido = models.TextField()
@@ -94,7 +99,7 @@ class Post(models.Model):
         return Producto.objects.filter(autor__in=user_ids)
 
     def __str__(self):
-        return f'{self.user.username}: {self.contenido}'
+        return f'{self.usuario.username}: {self.contenido}'
 
 class PostTransporte(models.Model):
     transportista = models.ForeignKey(User, on_delete=models.CASCADE,related_name='postTransporte')
@@ -102,7 +107,7 @@ class PostTransporte(models.Model):
     cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteT')
     tamaño = models.CharField(max_length=50, choices = TAMAÑO, null=True)
     refrigeracion = models.BooleanField(default=False)
-    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
+    producto = models.CharField(max_length=50, choices = PRODUCTOS, null=True)
     variedad = models.CharField(max_length=50, null=True)
     cantidad_actual = models.IntegerField(default=0)
     
@@ -124,21 +129,23 @@ class PostTransporte(models.Model):
                             .values_list('to_user_id', flat= True)
         return Producto.objects.filter(autor__in=user_ids)
 
+
     def __str__(self):
-        return f'{self.user.username}: {self.contenido}'
+        return f'{self.transportista.username}: {self.productor.username}'
 class Producto(models.Model):
     
     autor = models.ForeignKey(User, on_delete=models.CASCADE,related_name='producto')
-    fruta = models.CharField(max_length=50, choices = FRUTAS, null=True)
+    producto = models.CharField(max_length=50, choices = PRODUCTOS, null=True)
     variedad = models.CharField(max_length=50, null=True)
+    calibre = models.CharField(max_length=50,choices = CALIBRE, null=True)
     cantidad = models.IntegerField(default=0)
     fecha_subida = models.DateTimeField(default=timezone.now)
     imagen = models.ImageField(upload_to="Productos", null=True)
     precio = models.IntegerField(default=0)
     def __str__(self):
-        return f'{self.autor.username}: {self.fruta}'
+        return f'{self.autor.username}: {self.producto}: { self.variedad} :  { self.calibre}'
 
-class Relacion(models.Model):
+class ProcesoVenta(models.Model):
     from_post = models.ForeignKey(Post, related_name='Puja', on_delete=models.CASCADE)
     to_user = models.ForeignKey(User, related_name='Participante_de', on_delete=models.CASCADE)
     productos = models.ForeignKey(Producto, related_name='Productos', on_delete=models.CASCADE)
@@ -159,8 +166,3 @@ class Contrato(models.Model):
     fecha_inicio = models.DateField(default=timezone.now)
     fecha_termino = models.DateField(default=timezone.now)
     vigencia = models.BooleanField(default=False)
-
-
-class EstadoPr(models.Model):
-    Estado = models.CharField(max_length=50, null=True, choices=EstadoSolicitudCompra, default='3')
-

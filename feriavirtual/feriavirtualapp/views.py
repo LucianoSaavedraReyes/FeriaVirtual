@@ -16,6 +16,8 @@ from django.contrib.auth.decorators import login_required
 from transbank.webpay.webpay_plus.transaction import Transaction
 from transbank.error.transbank_error import TransbankError
 from django.contrib.auth import login
+from operator import attrgetter
+
 # Create your views here.
 def listaContratos(request):
     cont = Contrato.objects.all()
@@ -77,9 +79,8 @@ def registerinterno(request):
     return render(request, 'register-interno.html',context)    
 
 def publicaciones(request):
-    posts = Post.objects.filter(EstadoSolicitud= "1")
-    context ={'posts':posts}
-    return render(request, 'publicaciones.html',context)
+    
+    return render(request, 'publicaciones.html',{})
 
 def ingresarproductos(request):
     if request.method == 'POST':
@@ -87,15 +88,15 @@ def ingresarproductos(request):
         if form.is_valid():
             prod = form.save(commit=False)
             try:
-                Producto.objects.get(autor=request.user, fruta=prod.fruta)
-                existe = Producto.objects.get(autor=request.user, fruta=prod.fruta)
+                Producto.objects.get(autor=request.user, producto=prod.producto)
+                existe = Producto.objects.get(autor=request.user, producto=prod.producto)
                 var = form.cleaned_data['cantidad']
                 existe.autor = request.user
                 existe.fecha_subida = timezone.now()
                 existe.imagen = request.FILES['imagen']
                 existe.cantidad = existe.cantidad+var
                 existe.save()
-                messages.success(request, f'Frutas agregadas a tus {existe.fruta}.')
+                messages.success(request, f'Productos agregados a tus {existe.producto}.')
                 pass
                 return redirect('/')
                 
@@ -131,12 +132,12 @@ def venta(request):
         form = FormVenta()
     context = { 'form': form }
     return render(request, 'iniciar-venta.html',context)
-
+'''
 def subasta(request,pk):
     post = get_object_or_404(Post, pk=pk)
 
     try:
-        prod = Producto.objects.get(autor=request.user, fruta=post.fruta)
+        prod = Producto.objects.get(autor=request.user, producto=post.producto)
 
         if request.method == "POST":
             form = FormPujarSubasta(request.POST)
@@ -145,12 +146,13 @@ def subasta(request,pk):
                     var = form.cleaned_data['cantidad']
                     
                     post.cantidad_actual = post.cantidad_actual+var
+                    
                     prod.cantidad = prod.cantidad-var
                     if var > prod.cantidad:
                         messages.error(request, f'No tienes la cantidad suficiente para participar en la subasta .')
                     else:
                         if post.cantidad_actual > post.cantidad_necesaria:
-                            messages.error(request, f'Esa cantidad de fruta supera la cantidad necesaria.')
+                            messages.error(request, f'Esa cantidad de productos supera la cantidad necesaria.')
                             return redirect('/')
                         else:
                             current_user = request.user
@@ -185,8 +187,9 @@ def subasta(request,pk):
             context ={'post':post , 'form':form, 'resta':resta,}
             return render(request, 'subasta.html', context)    
     except Producto.DoesNotExist:
-        messages.error(request, f'No tienes ese tipo de fruta en tus productos.')
+        messages.error(request, f'No tienes ese tipo de producto en tus productos.')
         return redirect('/')
+'''
 def pagar(request,total,pk):
     total = total
     buy_order = str(pk)
@@ -205,6 +208,7 @@ def pagar(request,total,pk):
         error =e.message
         context ={'total':total,"error":error,}
         return render(request, 'pagar.html', context) 
+'''
 def pagarsubasta(request,pk):
     post = Post.objects.get(pk=pk)
     parts = post.participantes()
@@ -228,7 +232,7 @@ def pagarsubasta(request,pk):
     context ={'post':post, 'parts':parts, 'prods':prods, 'rel':rel, 'total': total,}
     
     return render(request, 'pagar-subasta.html', context) 
-
+'''
 def notificacion(request):
     try:
         notis=Notificacion.objects.filter(usuario=request.user)
@@ -297,6 +301,32 @@ def modificarSolicitud (request, pk):
         mod = FormSolicitudEstado(request.POST, instance = SolicitudPK)
         if mod.is_valid():
             SolicitudPK = mod.save(commit=False)
+            
+            SolicitudPK = Post.objects.get(pk = pk)
+            topProductores = User.objects.filter(rol='1')
+            cantidadnecesaria= SolicitudPK.cantidad_necesaria
+            productonecesario = SolicitudPK.producto
+            calibrenecesario = SolicitudPK.calibre
+            
+            try:
+                for productor in topProductores:
+                    topProductos = []    
+                    topProductos += Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
+                min_precio = min(topProductos, key=attrgetter('precio'))
+                try:
+                    productoganador = topProductos.objects.get(precio=min_precio)
+                    productorganador = User.objects.get(username=productoganador.username)
+                    #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
+                    productoganador.cantidad -= cantidadnecesaria
+                    #cantidad actual ya no seria necesaria
+                    SolicitudPK.cantidad_actual = cantidadnecesaria
+                except Producto.MultipleObjectsReturned:   
+                    prodganadores: topProductos.objects.filter(precio=min_precio)
+                    cantidadP = prodganadores.count
+            except Producto.DoesNotExist :   
+                SolicitudPK.EstadoSolicitud = '3' 
+                messages.error(request, f'En este momento no hay productores que puedan satisfacer el pedido')
+                
             SolicitudPK.save()
             return redirect('/Solicitudes')
     else:

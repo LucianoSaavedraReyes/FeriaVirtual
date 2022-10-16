@@ -7,8 +7,9 @@
         <tr class="table tr">
       
           <td>usuario </td>
-          <td>fruta</td>
+          <td>Producto</td>
           <td>variedad</td>
+          <td>Calibre</td>
           <td>cantidad_actual</td>
           <td>cantidad_necesaria</td>
           <td>contenido</td>
@@ -22,9 +23,11 @@
       
             <td>{{ s.usuario.username }}</td>
         
-            <td>{{ s.get_fruta_display }}</td>
+            <td>{{ s.get_producto_display }}</td>
     
             <td>{{ s.variedad }}</td>
+            
+            <td>{{ s.get_calibre_display }}</td>
   
             <td>{{ s.cantidad_actual }}</td>
 

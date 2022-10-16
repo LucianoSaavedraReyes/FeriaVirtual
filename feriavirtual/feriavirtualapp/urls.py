@@ -17,8 +17,10 @@ urlpatterns = [
     path('ingresar-productos/', views.ingresarproductos, name='ingresar-productos'),
     path('mis-productos/', views.misproductos, name='mis-productos'),
     path('venta/', views.venta, name='venta'),
-    path('subasta/<int:pk>/', views.subasta, name='subasta'),
-    path('pagarsubasta/<int:pk>/', views.pagarsubasta, name='pagarsubasta'),
+    
+    #path('subasta/<int:pk>/', views.subasta, name='subasta'),
+    
+    #path('pagarsubasta/<int:pk>/', views.pagarsubasta, name='pagarsubasta'),
     path('terminar/', views.terminar, name='terminar'),
     path('pagar/<int:total>/<int:pk>', views.pagar, name='pagar'),
     path('notificacion/', views.notificacion, name='notificacion'),
