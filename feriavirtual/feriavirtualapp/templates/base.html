@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FERIA VIRTUAL</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'css/styles.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/flexboxgrid.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static 'css/normalize.css' %}">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/87452a2af3.js" crossorigin="anonymous"></script>
+    
+</head>
+<body class="container-fluid">
+    <b></b>
+    <nav class="row center-xs middle-xs">
+        <a href="/" class="col-xs-12 col-sm-4 "><li><i class="fas fa-home"></i>Feria Virtual</li></a>
+    </nav>
+    {% if request.user.is_authenticated %}
+        <div class="contenedor-login row end-xs">
+            {% if request.user.rol == "1"  %}
+            <a href="{% url 'mis-productos' %}" class="col-xs-2"><i class="far fa-lemon"></i> Mis Productos</a>
+
+            <a href="{% url 'ingresar-productos'  %}" class="col-xs-2"><i class="fas fa-external-link-square-alt"></i> Ingresar Productos</a>
+            {% endif %}
+            {% if request.user.rol == "2" %}
+            <a href="{% url 'notificacion' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-user-plus"></i> Notificaciones de pago</a>
+            <a href="{% url 'Solicitud' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-search-dollar"></i> Solicitud</a>
+            {% endif %}
+            {% if request.user.rol == "3" %}
+            <a href="{% url 'notificacion' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-user-plus"></i> Notificaciones de pago</a>
+            <a href="{% url 'Solicitud' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-search-dollar"></i> Solicitud</a>
+            {% endif %}
+            {% if request.user.rol == "6" %}
+            <a href="{% url 'gestionContratos' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-file-contract"></i> Gestion de contratos</a>
+            <a href="{% url 'register' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-user-plus"></i> Registrar Usuario</a>
+            <a href="{% url 'Solicitud' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-search-dollar"></i> Iniciar venta</a>
+            <a href="{% url 'Solicitudes' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-search-dollar"></i>Solicitudes</a>
+            {% endif %}
+            <a href="{% url 'publicaciones' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-clipboard-list"></i> Publicaciones</a>
+            <a href="{% url 'logout' %}" class="col-xs-12 col-sm-2 center-xs"><i class="fas fa-sign-out-alt"></i> Cerrar Sesión</a>
+
+        </div>
+    {% else %}
+        <div class="contenedor-login row center-xs">
+            <a href="{% url 'login' %}" class="col-xs-12 col-sm-6">Ingresár</a>
+        </div>
+    {% endif %}
+    {% if messages %}
+        {% for message in messages %}
+        <div class="notification {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    {% endif%}
+    <div class="contenido-pagina">
+    {% block content %}
+    {% endblock %}
+    </div>
+    <footer>
+        <div class="footer row center-xs">
+            <p class="col-xs-12">Lorem ipsum dolor sit amet consectetur, adipisicing elit. Recusandae odit doloremque maiores vel illum facilis voluptates est, veniam nihil ipsam iusto a sed et rem. Temporibus voluptatem officiis enim error! Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus tempora ipsa iure dolor cumque totam. Nesciunt eveniet officia nemo, consequuntur recusandae quas neque laudantium eos quasi rerum ducimus, deserunt ipsa!</p>
+            <p class="col-xs-12">Desarollado por x4no195</p>
+        </div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+    <script type="application/javascript" src="{% static 'js/status.js' %}"></script>
+    <script type="application/javascript" src="{% static 'js/popup.js' %}"></script>
+</body>
+</html>
