@@ -191,7 +191,7 @@ def subasta(request,pk):
         return redirect('/')
 '''
 def pagar(request,total,pk):
-    total = total
+    total = total   
     buy_order = str(pk)
     session_id = request.user.username
     return_url = 'http://127.0.0.1:8000/terminar/'
@@ -312,7 +312,10 @@ def modificarSolicitud (request, pk):
                     topProductos = []
                     try:
                         producto1 = Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
-                        topProductos.append(producto1)
+                        if producto1.cantidad >= cantidadnecesaria:
+                            topProductos.append(producto1)
+                        else:
+                            print('Ningun productor tiene los productos suficientes para participar')
                     except Producto.DoesNotExist:
                         print("-")
                         
@@ -325,14 +328,21 @@ def modificarSolicitud (request, pk):
                             productoganador = ganador     
                             productorganador = User.objects.get(username=productoganador.autor.username)
                             #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
-                            productoganador.cantidad -= cantidadnecesaria
+                            
+                            productoganador.cantidad = productoganador.cantidad - cantidadnecesaria
+                            productoganador.save()
+                            print(cantidadnecesaria)
                             #cantidad actual ya no seria necesaria
                             SolicitudPK.cantidad_actual = cantidadnecesaria
+                            
+
+
                 except Producto.MultipleObjectsReturned:   
                     prodganadores: topProductos.objects.filter(precio=min_precio)
                     cantidadP = prodganadores.count
+                    SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
             except Producto.DoesNotExist :   
-                SolicitudPK.EstadoSolicitud = '3' 
+                SolicitudPK.EstadoSolicitud = '3'
                 messages.error(request, f'En este momento no hay productores que puedan satisfacer el pedido')
                 
             SolicitudPK.save()
