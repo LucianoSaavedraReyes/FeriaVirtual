@@ -307,19 +307,27 @@ def modificarSolicitud (request, pk):
             cantidadnecesaria= SolicitudPK.cantidad_necesaria
             productonecesario = SolicitudPK.producto
             calibrenecesario = SolicitudPK.calibre
-            
             try:
                 for productor in topProductores:
-                    topProductos = []    
-                    topProductos += Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
+                    topProductos = []
+                    try:
+                        producto1 = Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
+                        topProductos.append(producto1)
+                    except Producto.DoesNotExist:
+                        print("-")
+                        
+                   
                 min_precio = min(topProductos, key=attrgetter('precio'))
+                min_precio = min_precio.precio
                 try:
-                    productoganador = topProductos.objects.get(precio=min_precio)
-                    productorganador = User.objects.get(username=productoganador.username)
-                    #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
-                    productoganador.cantidad -= cantidadnecesaria
-                    #cantidad actual ya no seria necesaria
-                    SolicitudPK.cantidad_actual = cantidadnecesaria
+                    for ganador in topProductos:
+                        if ganador.precio == min_precio:
+                            productoganador = ganador     
+                            productorganador = User.objects.get(username=productoganador.autor.username)
+                            #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
+                            productoganador.cantidad -= cantidadnecesaria
+                            #cantidad actual ya no seria necesaria
+                            SolicitudPK.cantidad_actual = cantidadnecesaria
                 except Producto.MultipleObjectsReturned:   
                     prodganadores: topProductos.objects.filter(precio=min_precio)
                     cantidadP = prodganadores.count
