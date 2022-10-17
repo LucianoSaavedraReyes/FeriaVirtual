@@ -12,7 +12,7 @@ urlpatterns = [
     path('registerinterno/', views.registerinterno, name='register-interno'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
-    path('/', views.seguimiento, name='seguimiento'),
+    path('', views.seguimiento, name='seguimiento'),
     path('ingresar-productos/', views.ingresarproductos, name='ingresar-productos'),
     path('mis-productos/', views.misproductos, name='mis-productos'),
     path('venta/', views.venta, name='venta'),
