@@ -286,15 +286,10 @@ def Solicitud(request):
         form = FormVenta()
     context = { 'form': form }
     return render(request, 'Solicitud.html',context)
-
-
-
-
 def solicitudes(request):
     soli = Post.objects.all()
     context ={'soli':soli,}
     return render(request, 'Solicitudes.html', context)
-
 def modificarSolicitud (request, pk):
     SolicitudPK = Post.objects.get(pk = pk)
     if request.method == 'POST':
@@ -317,9 +312,11 @@ def modificarSolicitud (request, pk):
                             print('Ningun productor tiene los productos suficientes para participar')
                     except Producto.DoesNotExist:
                         print("Producto no existe")
-
-                min_precio = min(topProductos, key=attrgetter('precio'))
-                min_precio = min_precio.precio
+                try:
+                    min_precio = min(topProductos, key=attrgetter('precio'))
+                    min_precio = min_precio.precio
+                except:
+                    print("no hay nada ahi")
                 try:
                     for ganador in topProductos:
                         if ganador.precio == min_precio:
