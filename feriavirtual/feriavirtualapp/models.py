@@ -47,13 +47,14 @@ TAMAÑO =(
     ("12", "Super Pesado"),
     )
 EstadoSolicitudCompra =(
-    ("1", "aprobado"),
-    ("2", "rechazado"),
+    ("1", "Aprobado"),
+    ("2", "Rechazado"),
     ("3", "Pendiente"),
-    ("4", "Completado"),
-    ("5", "Devuelto"),
-    ("6", "Subasta"),
-    ("7", "En camino")
+    ("4", "Subasta Transporte"),
+    ("5", "Esperando productos en bodega central"),
+    ("6", "Revision de calidad"),
+    ("7", "En camino"),
+    ("8", "Destino"),
     )
 class User(AbstractUser):
     ROLES =(
@@ -88,16 +89,8 @@ class Post(models.Model):
     def publish(self):
         self.fecha_publicacion = timezone.now()
         self.save()
-    def participantes(self):
-        user_ids = Relacion.objects.filter(from_post=self)\
-                            .values_list('to_user_id', flat= True)
         
         return User.objects.filter(id__in=user_ids)
-    def productos(self):
-        user_ids = Relacion.objects.filter(from_post=self)\
-                            .values_list('to_user_id', flat= True)
-        return Producto.objects.filter(autor__in=user_ids)
-
     def __str__(self):
         return f'{self.usuario.username}: {self.contenido}'
 
@@ -119,15 +112,6 @@ class PostTransporte(models.Model):
     def publish(self):
         self.fecha_publicacion = timezone.now()
         self.save()
-    def participantes(self):
-        user_ids = Relacion.objects.filter(from_post=self)\
-                            .values_list('to_user_id', flat= True)
-        
-        return User.objects.filter(id__in=user_ids)
-    def productos(self):
-        user_ids = Relacion.objects.filter(from_post=self)\
-                            .values_list('to_user_id', flat= True)
-        return Producto.objects.filter(autor__in=user_ids)
 
 
     def __str__(self):

@@ -301,7 +301,6 @@ def modificarSolicitud (request, pk):
         form = FormSolicitudEstado(request.POST, instance = SolicitudPK)
         if form.is_valid():
             SolicitudPK = form.save(commit=False)
-            
             SolicitudPK = Post.objects.get(pk = pk)
             topProductores = User.objects.filter(rol='1')
             cantidadnecesaria= SolicitudPK.cantidad_necesaria
@@ -317,9 +316,8 @@ def modificarSolicitud (request, pk):
                         else:
                             print('Ningun productor tiene los productos suficientes para participar')
                     except Producto.DoesNotExist:
-                        print("-")
-                        
-                203
+                        print("Producto no existe")
+
                 min_precio = min(topProductos, key=attrgetter('precio'))
                 min_precio = min_precio.precio
                 try:
@@ -335,8 +333,6 @@ def modificarSolicitud (request, pk):
                             #cantidad actual ya no seria necesaria
                             SolicitudPK.cantidad_actual = cantidadnecesaria
                             SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
-
-
                 except Producto.MultipleObjectsReturned:   
                     prodganadores: topProductos.objects.filter(precio=min_precio)
                     cantidadP = prodganadores.count
