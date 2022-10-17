@@ -3,7 +3,8 @@
 	margin: 0;
 	font-family: century gothic;
 	text-align: center;
-    color: white;
+    
+    
 }
 .main{
     margin: 50px 0;
@@ -11,10 +12,7 @@
 .table tr{
     font-weight: 700;
 }
-.container-fluid{
-    background-color: black;
-    transition-duration: 1s;
-}
+
 form {
 	padding: 50px 20px;
 	background-color: #ededed;
@@ -235,4 +233,3 @@ table tr td img{
   }
 
 
-  

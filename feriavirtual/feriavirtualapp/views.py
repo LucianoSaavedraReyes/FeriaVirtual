@@ -18,6 +18,8 @@ from transbank.error.transbank_error import TransbankError
 from django.contrib.auth import login
 from operator import attrgetter
 
+
+
 # Create your views here.
 def listaContratos(request):
     cont = Contrato.objects.all()
@@ -317,7 +319,7 @@ def modificarSolicitud (request, pk):
                     except Producto.DoesNotExist:
                         print("-")
                         
-                   
+                203
                 min_precio = min(topProductos, key=attrgetter('precio'))
                 min_precio = min_precio.precio
                 try:
