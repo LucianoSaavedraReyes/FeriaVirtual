@@ -80,7 +80,8 @@ def registerinterno(request):
     return render(request, 'register-interno.html',context)    
 
 def seguimiento(request):
-    return render(request, 'seguimiento.html',{})
+    solis = Post.objects.filter(usuario=request.user)
+    return render(request, 'seguimiento.html',{'solis':solis})
 
 def ingresarproductos(request):
     if request.method == 'POST':
@@ -268,10 +269,7 @@ def notificar(request,pk):
     
     messages.success(request, f'El cliente ha sido notificado y se ha iniciado una subasta de transporte')
     return render(request, 'notificado.html',) 
-
-
 def Solicitud(request):
-
     if request.method == 'POST':
         form = FormVenta(request.POST, request.FILES)
         if form.is_valid():
@@ -301,46 +299,65 @@ def modificarSolicitud (request, pk):
             cantidadnecesaria= SolicitudPK.cantidad_necesaria
             productonecesario = SolicitudPK.producto
             calibrenecesario = SolicitudPK.calibre
-            try:
-                for productor in topProductores:
-                    topProductos = []
+            estadoactual = form.cleaned_data['EstadoSolicitud']
+            print(estadoactual)
+            '''Solicitud aprobada'''
+            if estadoactual == "1":
+                try:
+                    for productor in topProductores:
+                        topProductos = []
+                        try:
+                            producto1 = Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
+                            if producto1.cantidad >= cantidadnecesaria:
+                                topProductos.append(producto1)
+                            else:
+                                print('Ningun productor tiene los productos suficientes para participar')
+                        except Producto.DoesNotExist:
+                            print("Producto no existe")
                     try:
-                        producto1 = Producto.objects.get(autor=productor , producto=productonecesario, calibre=calibrenecesario)
-                        if producto1.cantidad >= cantidadnecesaria:
-                            topProductos.append(producto1)
-                        else:
-                            print('Ningun productor tiene los productos suficientes para participar')
-                    except Producto.DoesNotExist:
-                        print("Producto no existe")
-                try:
-                    min_precio = min(topProductos, key=attrgetter('precio'))
-                    min_precio = min_precio.precio
-                except:
-                    print("no hay nada ahi")
-                try:
-                    for ganador in topProductos:
-                        if ganador.precio == min_precio:
-                            productoganador = ganador     
-                            productorganador = User.objects.get(username=productoganador.autor.username)
-                            #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
-                            
-                            productoganador.cantidad = productoganador.cantidad - cantidadnecesaria
-                            productoganador.save()
-                            print(cantidadnecesaria)
-                            #cantidad actual ya no seria necesaria
-                            SolicitudPK.cantidad_actual = cantidadnecesaria
-                            SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
-                except Producto.MultipleObjectsReturned:   
-                    prodganadores: topProductos.objects.filter(precio=min_precio)
-                    cantidadP = prodganadores.count
-                    
-            except Producto.DoesNotExist :   
-                SolicitudPK.EstadoSolicitud = '3'
-                messages.error(request, f'En este momento no hay productores que puedan satisfacer el pedido')
-                
+                        min_precio = min(topProductos, key=attrgetter('precio'))
+                        min_precio = min_precio.precio
+                    except:
+                        print("no hay nada ahi")
+                    try:
+                        for ganador in topProductos:
+                            if ganador.precio == min_precio:
+                                productoganador = ganador     
+                                productorganador = User.objects.get(username=productoganador.autor.username)
+                                #posiblidad de bloque pl sql, cuando el producto llege a 0,borrar la fila completa del producto
+                                productoganador.cantidad = productoganador.cantidad - cantidadnecesaria
+                                productoganador.save()
+                                print(cantidadnecesaria)
+                                #cantidad actual ya no seria necesaria
+                                SolicitudPK.cantidad_actual = cantidadnecesaria
+                                SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
+                    except Producto.MultipleObjectsReturned:   
+                        prodganadores: topProductos.objects.filter(precio=min_precio)
+                        cantidadP = prodganadores.count
+                except Producto.DoesNotExist :   
+                    SolicitudPK.EstadoSolicitud = '3'
+                    messages.error(request, f'En este momento no hay productores que puedan satisfacer el pedido')
+            '''Solicitud Pendiente'''
+            if estadoactual == "3":
+                SolicitudPK.EstadoSolicitud = '3' 
+            '''Solicitud En transporte'''
+            if estadoactual == "4":
+                SolicitudPK.EstadoSolicitud = '4' 
+            '''a la espera por productos en bodega'''
+            if estadoactual == "5":
+                SolicitudPK.EstadoSolicitud = '5' 
+            '''Revision de calidad'''
+            if estadoactual == "6":
+                SolicitudPK.EstadoSolicitud = '6' 
+            '''En camino'''
+            if estadoactual == "7":
+                SolicitudPK.EstadoSolicitud = '7' 
+            '''Destino'''
+            if estadoactual == "8":
+                SolicitudPK.EstadoSolicitud = '8' 
             SolicitudPK.save()
             return redirect('/Solicitudes')
-    else:
+    else:  
         form = FormSolicitudEstado(instance=SolicitudPK)   
         context ={'form':form,}
         return render(request, 'modificarsoli.html', context)

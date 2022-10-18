@@ -2,9 +2,10 @@
 {% load humanize %}
 {% block content %}
 
-<div class="main row">
-    <table class="tabla col-xs-12">
-        <tr class="table tr">
+<div class="main">
+  <div class="table-responsive">
+    <table class="table table-light table-striped">
+      <tr class="table-active">
       
           <td>usuario </td>
           <td>Producto</td>
@@ -17,6 +18,7 @@
           <td>fecha_creacion</td>
           <td>EstadoSolicitudCompra</td>
           <td>imagen</td>
+          <td>ModEstado</td>
 
         {% for s in soli %} 
         <tr>
@@ -49,6 +51,9 @@
           </tr>
         {% endfor %}
       </table>
+    </div>
+
+
 </div>
 
 

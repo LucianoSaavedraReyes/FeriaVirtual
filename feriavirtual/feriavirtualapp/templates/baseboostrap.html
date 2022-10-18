@@ -31,95 +31,136 @@
 
         <ul class="list-unstyled components">
             <p>Feria Virtual</p>
-            
+            <img src="{{ request.user.imagen.url }}">
+            <p>user: {{ user.get_username }}</p>
+
+
             <li class="active">
-{% if request.user.is_authenticated %}
-                <a href="#homeSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Funciones</a>
-                {% if request.user.rol == "1"  %}
-                <a href="{% url 'seguimiento' %}" ><i class="fas fa-clipboard-list"></i> Seguimiento</a>
-                <a href="{% url 'mis-productos' %}" ><i class="far fa-lemon"></i> Mis Productos</a>
+              {% if request.user.rol == "1"%}  <!--Productor -->
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'ingresar-productos'  %}">Ingresar Productos</a>
+              <a href="{% url 'mis-productos' %}" >Mis Productos</a>
+              <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
+              {% endif %}  <!--Productor -->
+
+              {% if request.user.rol == "2"  %}  <!--clienteE -->
+
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'Solicitud' %}">Solicitud</a>
+              <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
+              <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
+              {% endif %}  <!--clienteIE -->
+
+
+              {% if request.user.rol == "3"  %}  <!--clienteI -->
+
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'Solicitud' %}">Solicitud</a>
+              <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
+              <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
+              {% endif %}  <!--clienteIE -->
+
+              {% if request.user.rol == "4"  %}  <!--clienteI -->
+               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              {% endif %}  <!--clienteIE -->
+
+              {% if request.user.rol == "5"  %}  <!--clienteI -->
+               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              {% endif %}  <!--clienteIE -->
+
+
+              {% if request.user.rol == "6"%}  <!--admin -->
+              <a href="http://127.0.0.1:8000/admin/" >Administracion Site</a>
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'gestionContratos' %}" > Gestion de contratos</a>
+              <a href="{% url 'register' %}" > Registrar Usuario</a>
+              <a href="{% url 'Solicitud' %}">Solicitud</a>
+              <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
+              <a href="#" >Productores</a>
+              <a href="#" > Notificaciones de pago</a>
+              {% endif %}  <!--admin -->
+              
+              {% if request.user.rol == "7"  %}  <!--clienteI -->
+               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              {% endif %}  <!--clienteIE -->
+
+
+
+
+  
+             <!-- <ul class="collapse list-unstyled" id="homeSubmenu"></ul>*/ -->
+          </li>            
+        </ul>
     
-                <a href="{% url 'ingresar-productos'  %}" ><i class="fas fa-external-link-square-alt"></i> Ingresar Productos</a>
-                {% endif %}
-                {% if request.user.rol == "2" %}
-                <a href="{% url 'seguimiento' %}" ><i class="fas fa-clipboard-list"></i> Seguimiento</a>
-                <a href="{% url 'notificacion' %}" ><i class="fas fa-user-plus"></i> Notificaciones de pago</a>
-                <a href="{% url 'Solicitud' %}" ><i class="fas fa-search-dollar"></i> Solicitud</a>
-                {% endif %}
-                {% if request.user.rol == "3" %}
-                <a href="{% url 'seguimiento' %}" ><i class="fas fa-clipboard-list"></i> Seguimiento</a>
-                <a href="{% url 'notificacion' %}" ><i class="fas fa-user-plus"></i> Notificaciones de pago</a>
-                <a href="{% url 'Solicitud' %}" ><i class="fas fa-search-dollar"></i> Solicitud</a>
-                {% endif %}
-                {% if request.user.rol == "6" %}
-                <a href="{% url 'seguimiento' %}" ><i class="fas fa-clipboard-list"></i> Seguimiento</a>
-                <a href="{% url 'gestionContratos' %}"><i class="fas fa-file-contract"></i> Gestion de contratos</a>
-                <a href="{% url 'register' %}" ><i class="fas fa-user-plus"></i> Registrar Usuario</a>
-                <a href="{% url 'Solicitud' %}" ><i class="fas fa-search-dollar"></i> Iniciar venta</a>
-                <a href="{% url 'Solicitudes' %}" ><i class="fas fa-search-dollar"></i>Solicitudes</a>
-                {% endif %}
-            </li>
-{% endif %}
+      
+
+                
+        {% if user.is_authenticated %}
+        <ul class="list-unstyled CTAs">
             <li>
-                <a href="#">Sobre nosotros</a>
-            </li>
-            <li>
-                <a href="#pageSubmenu" data-toggle="collapse" aria-expanded="false" class="dropdown-toggle">Paginas</a>
-                <ul class="collapse list-unstyled" id="pageSubmenu">
-                    <li>
-                        <a href="#">Pagina 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Pagina 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Pagina 3</a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#">Portafolio</a>
-            </li>
-            <li>
-                <a href="#">Contacto</a>
+                <a href="{% url 'logout' %}" class="download">Cerrar Sesion</a>
             </li>
         </ul>
-{% if request.user.is_authenticated %}
+        {% else %}
         <ul class="list-unstyled CTAs">
           <li>
-              
-              <a href="{% url 'logout' %}"><i class="fas fa-sign-out-alt download"></i> Cerrar Sesión</a>
+            <a href="{% url 'login' %}" class="download">Ingresár</a>
+            <a href="{% url 'register-interno' %}" class="download">Registrarse</a>
           </li>
-        </ul>
-  {% else %}
-        <ul class="list-unstyled CTAs">
-            <li>
-                <a href="{% url 'login' %}" class="download">Ingresar</a>
-            </li>
-        </ul>
-  {% endif %}
-  </nav>
+      </ul>
+
+        {% endif%}
+    </nav>
+
+
+
+
     <!-- Page Content  -->
+
+
     <div id="content">
+
+
+
+
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
 
                 <button type="button" id="sidebarCollapse"class="btn btn-light">
                     <i class="fas fa-align-left"></i>
-                    <span>Menu</span>
+                    <span>Close/Open Sidebar</span>
+                  </button>
+
+                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" onclick="history.back()" pe="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
+                    
+                </button>
+
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="nav navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a class="nav-link" href="#" class="btn btn-light" >Volver</a>
+                        </li>
+                    </ul>
+                </div>
+
 
 
             </div>
+
+            
+            
         </nav>
 
 
 
-        {% block content %}
-        {% endblock %}
-    
+
     <!-- /#page-content-wrapper -->
-  
+    {% block content %}
+    {% endblock %}
+
   </div>
 
   <!-- /#wrapper -->
@@ -181,15 +222,14 @@
             <!-- Grid column -->
             <div class="col-md-3 col-lg-4 col-xl-3 mx-auto mb-4">
               <!-- Content -->
-              <h6 class="text-uppercase fw-bold">Company name</h6>
+              <h6 class="text-uppercase fw-bold">Maipo Grande</h6>
               <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
                   style="width: 60px; background-color: #7c4dff; height: 2px"
                   />
               <p>
-                Here you can use rows and columns to organize your footer
-                content. Lorem ipsum dolor sit amet, consectetur adipisicing
-                elit.
+                Maipo GrandeMaipo GrandeMaipo GrandeMaipo GrandeMaipo GrandeMaipo 
+                GrandeMaipo GrandeMaipo GrandeMaipo GrandeMaipo GrandeMaipo GrandeMaipo Grande.
               </p>
             </div>
             <!-- Grid column -->
@@ -203,16 +243,16 @@
                   style="width: 60px; background-color: #7c4dff; height: 2px"
                   />
               <p>
-                <a href="#!" class="text-dark">MDBootstrap</a>
+                <a href="#!" class="text-dark">Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">MDWordPress</a>
+                <a href="#!" class="text-dark">Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">BrandFlow</a>
+                <a href="#!" class="text-dark">Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">Bootstrap Angular</a>
+                <a href="#!" class="text-dark">Maipo Grande Maipo Grande</a>
               </p>
             </div>
             <!-- Grid column -->
@@ -220,22 +260,22 @@
             <!-- Grid column -->
             <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold">Useful links</h6>
+              <h6 class="text-uppercase fw-bold">Maipo Grande Maipo Grande</h6>
               <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
                   style="width: 60px; background-color: #7c4dff; height: 2px"
                   />
               <p>
-                <a href="#!" class="text-dark">Your Account</a>
+                <a href="#!" class="text-dark">Maipo Grande Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">Become an Affiliate</a>
+                <a href="#!" class="text-dark">Maipo Grande an Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">Shipping Rates</a>
+                <a href="#!" class="text-dark">Maipo Grande Maipo Grande</a>
               </p>
               <p>
-                <a href="#!" class="text-dark">Help</a>
+                <a href="#!" class="text-dark">Maipo Grande</a>
               </p>
             </div>
             <!-- Grid column -->
@@ -243,7 +283,7 @@
             <!-- Grid column -->
             <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mb-md-0 mb-4">
               <!-- Links -->
-              <h6 class="text-uppercase fw-bold">Contact</h6>
+              <h6 class="text-uppercase fw-bold">Maipo Grande</h6>
               <hr
                   class="mb-4 mt-0 d-inline-block mx-auto"
                   style="width: 60px; background-color: #7c4dff; height: 2px"
@@ -266,8 +306,8 @@
            style="background-color: rgba(0, 0, 0, 0.2)"
            >
         © 2020 Copyright:
-        <a class="text-dark" href="https://mdbootstrap.com/"
-           >MDBootstrap.com</a
+        <a class="text-dark" href="#"
+           >Feria Virtual Maipo Grande</a
           >
       </div>
       <!-- Copyright -->
@@ -277,9 +317,10 @@
   <!-- End of .container -->
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script type="application/javascript" src="{% static 'js/jsboostrapside.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/status.js' %}"></script>
 <script type="application/javascript" src="{% static 'js/popup.js' %}"></script>
-<script type="application/javascript" src="{% static 'js/jsboostrapside.js' %}"></script>
+
 </body>
 </html>
 

@@ -57,7 +57,6 @@ class FormVenta(forms.ModelForm):
         model = Post
         fields = ('producto','variedad','calibre','cantidad_necesaria','cliente','contenido', 'imagen',)
 
-
 class FormSolicitudEstado(forms.ModelForm):
     class Meta:
         model =  Post

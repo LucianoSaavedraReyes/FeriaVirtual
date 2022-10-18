@@ -64,7 +64,7 @@ class User(AbstractUser):
     ("4", "Transportista"),
     ("5", "Consultor"),
     ("6", "Administrador"),
-    ("6", "Revisor de calidad"),
+    ("7", "Revisor de calidad"),
     )
     rol = models.CharField(max_length=50, choices = ROLES, null=True)
     imagen = models.ImageField(upload_to="Perfil",default='default.png')
@@ -89,10 +89,6 @@ class Post(models.Model):
     def publish(self):
         self.fecha_publicacion = timezone.now()
         self.save()
-        
-        return User.objects.filter(id__in=user_ids)
-    def __str__(self):
-        return f'{self.usuario.username}: {self.contenido}'
 
 class PostTransporte(models.Model):
     transportista = models.ForeignKey(User, on_delete=models.CASCADE,related_name='postTransporte')
@@ -150,3 +146,4 @@ class Contrato(models.Model):
     fecha_inicio = models.DateField(default=timezone.now)
     fecha_termino = models.DateField(default=timezone.now)
     vigencia = models.BooleanField(default=False)
+    
