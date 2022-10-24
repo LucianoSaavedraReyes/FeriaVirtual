@@ -21,6 +21,9 @@ from operator import attrgetter
 
 
 # Create your views here.
+
+def index(request):
+    return render(request, 'index.html', {})
 def listaContratos(request):
     cont = Contrato.objects.all()
     context ={'cont':cont}
@@ -80,8 +83,12 @@ def registerinterno(request):
     return render(request, 'register-interno.html',context)    
 
 def seguimiento(request):
+
     solis = Post.objects.filter(usuario=request.user)
-    return render(request, 'seguimiento.html',{'solis':solis})
+
+        
+    context = {'solis':solis}
+    return render(request, 'seguimiento.html',context)
 
 def ingresarproductos(request):
     if request.method == 'POST':
@@ -331,8 +338,11 @@ def modificarSolicitud (request, pk):
                                 #cantidad actual ya no seria necesaria
                                 SolicitudPK.cantidad_actual = cantidadnecesaria
                                 SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
+
+                                
                     except Producto.MultipleObjectsReturned:   
                         prodganadores: topProductos.objects.filter(precio=min_precio)
+
                         cantidadP = prodganadores.count
                 except Producto.DoesNotExist :   
                     SolicitudPK.EstadoSolicitud = '3'
@@ -361,3 +371,17 @@ def modificarSolicitud (request, pk):
         form = FormSolicitudEstado(instance=SolicitudPK)   
         context ={'form':form,}
         return render(request, 'modificarsoli.html', context)
+
+def registrarTransporte (request):
+    if request.method == 'POST':
+        form = FormRegistrarTransporte(request.POST)
+        if form.is_valid():
+            transp = form.save(commit=False)
+            transp.transportista = request.user
+            transp.save()
+            messages.success(request, f'Transporte Registrado')
+            return redirect('/registrarTransporte')
+    else:
+        form = FormRegistrarTransporte()
+    context = { 'form': form }
+    return render(request, 'registrarTransporte.html', context)

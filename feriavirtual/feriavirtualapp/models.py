@@ -25,7 +25,6 @@ PRODUCTOS =(
     ("19", "Pera"),
     ("20", "Manzana"),
     )
-
 #ATENDIENDO TAMAÑO Y CALIBRE LA FRUTA SE PUEDE CALIFICAR EN:
 CALIBRE =(
     ("1", "Segunda"),
@@ -90,28 +89,7 @@ class Post(models.Model):
         self.fecha_publicacion = timezone.now()
         self.save()
 
-class PostTransporte(models.Model):
-    transportista = models.ForeignKey(User, on_delete=models.CASCADE,related_name='postTransporte')
-    productor = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ProductorT')
-    cliente = models.ForeignKey(User, on_delete=models.CASCADE,related_name='ClienteT')
-    tamaño = models.CharField(max_length=50, choices = TAMAÑO, null=True)
-    refrigeracion = models.BooleanField(default=False)
-    producto = models.CharField(max_length=50, choices = PRODUCTOS, null=True)
-    variedad = models.CharField(max_length=50, null=True)
-    cantidad_actual = models.IntegerField(default=0)
-    
-    contenido = models.TextField()
-    imagen = models.ImageField(upload_to="Posts", null=True)
-    fecha_creacion = models.DateTimeField(default=timezone.now)
-    class Meta:
-        ordering = ['-fecha_creacion']
-    def publish(self):
-        self.fecha_publicacion = timezone.now()
-        self.save()
 
-
-    def __str__(self):
-        return f'{self.transportista.username}: {self.productor.username}'
 class Producto(models.Model):
     
     autor = models.ForeignKey(User, on_delete=models.CASCADE,related_name='producto')
@@ -146,4 +124,16 @@ class Contrato(models.Model):
     fecha_inicio = models.DateField(default=timezone.now)
     fecha_termino = models.DateField(default=timezone.now)
     vigencia = models.BooleanField(default=False)
+
+class Transporte(models.Model):
+    transportista = models.ForeignKey(User, on_delete=models.CASCADE)
+    tamaño = models.CharField(max_length=50, choices = TAMAÑO, null=True)
+    refrigeracion = models.BooleanField(default=False)
+    tarifa = models.IntegerField(default=0)
+    
+class soliTransporte(models.Model):
+    transporte = models.ForeignKey(Transporte, on_delete=models.CASCADE,null=True)
+    #en solicitud se puede encontrar toda la info de la misma, tales como productor, producto etc.
+    soli = models.ForeignKey(Post, on_delete=models.CASCADE, null=True)
+
     

@@ -31,9 +31,11 @@
 
         <ul class="list-unstyled components">
             <p>Feria Virtual</p>
+            {%if request.user.is_authenticated %}
             <img src="{{ request.user.imagen.url }}">
-            <p>user: {{ user.get_username }}</p>
 
+            <p>Usuario: {{ user.get_username }}</p>
+            {% endif %}  
 
             <li class="active">
               {% if request.user.rol == "1"%}  <!--Productor -->
@@ -61,7 +63,7 @@
               {% endif %}  <!--clienteIE -->
 
               {% if request.user.rol == "4"  %}  <!--clienteI -->
-               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+               <a href="{% url 'registrarTransporte' %}" >Registrar Transporte</a>
               {% endif %}  <!--clienteIE -->
 
               {% if request.user.rol == "5"  %}  <!--clienteI -->
@@ -70,7 +72,7 @@
 
 
               {% if request.user.rol == "6"%}  <!--admin -->
-              <a href="http://127.0.0.1:8000/admin/" >Administracion Site</a>
+              <a href="http://127.0.0.1:8000/admin/" >Sitio Administracion</a>
               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
               <a href="{% url 'gestionContratos' %}" > Gestion de contratos</a>
               <a href="{% url 'register' %}" > Registrar Usuario</a>
@@ -104,7 +106,7 @@
         {% else %}
         <ul class="list-unstyled CTAs">
           <li>
-            <a href="{% url 'login' %}" class="download">Ingresár</a>
+            <a href="{% url 'login' %}" class="download">Ingresar</a>
             <a href="{% url 'register-interno' %}" class="download">Registrarse</a>
           </li>
       </ul>
@@ -129,22 +131,12 @@
 
                 <button type="button" id="sidebarCollapse"class="btn btn-light">
                     <i class="fas fa-align-left"></i>
-                    <span>Close/Open Sidebar</span>
+                    <span></span>
                   </button>
 
-                  <button class="btn btn-dark d-inline-block d-lg-none ml-auto" onclick="history.back()" pe="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <i class="fa fa-arrow-left" aria-hidden="true"></i>
-                    
-                </button>
+                  
 
 
-                <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul class="nav navbar-nav ml-auto">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="#" class="btn btn-light" >Volver</a>
-                        </li>
-                    </ul>
-                </div>
 
 
 
@@ -185,7 +177,7 @@
                >
         <!-- Left -->
         <div class="me-5">
-          <span>Get connected with us on social networks:</span>
+          <span>Mantente conectado con nosotros por nuestras redes sociales:</span>
         </div>
         <!-- Left -->
   

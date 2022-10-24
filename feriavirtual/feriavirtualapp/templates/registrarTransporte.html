@@ -1,0 +1,13 @@
+{% extends 'baseboostrap.html' %}
+{% load humanize %}
+{% block content %}
+
+<div>
+    <form method="POST" action="">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <input type="submit" class="btn-mod" value="Registrar">
+    </form>
+</div>
+
+{% endblock %}

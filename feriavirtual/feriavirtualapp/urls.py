@@ -11,8 +11,9 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('registerinterno/', views.registerinterno, name='register-interno'),
     path('login/', LoginView.as_view(template_name='login.html'), name='login'),
+    path('', views.index, name='index'),
     path('logout/', LogoutView.as_view(template_name='logout.html'), name='logout'),
-    path('', views.seguimiento, name='seguimiento'),
+    path('seguimiento/', views.seguimiento, name='seguimiento'),
     path('ingresar-productos/', views.ingresarproductos, name='ingresar-productos'),
     path('mis-productos/', views.misproductos, name='mis-productos'),
     path('venta/', views.venta, name='venta'),
@@ -27,4 +28,5 @@ urlpatterns = [
     path('Solicitud/', views.Solicitud, name='Solicitud'),
     path('Solicitudes/', views.solicitudes, name='Solicitudes'),
     path('modificarsoli/<int:pk>/', views.modificarSolicitud, name="modificarSolicitud"),
+    path('registrarTransporte/', views.registrarTransporte, name="registrarTransporte"),
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

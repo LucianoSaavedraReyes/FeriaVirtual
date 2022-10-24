@@ -61,3 +61,8 @@ class FormSolicitudEstado(forms.ModelForm):
     class Meta:
         model =  Post
         fields = ('EstadoSolicitud',)
+
+class FormRegistrarTransporte(forms.ModelForm):
+    class Meta:
+        model = Transporte
+        fields = ('tamaño','refrigeracion','tarifa',)
