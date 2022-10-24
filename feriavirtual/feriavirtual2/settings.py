@@ -75,11 +75,18 @@ WSGI_APPLICATION = 'feriavirtual2.wsgi.application'
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+'default': {
+'ENGINE': "sql_server.pyodbc",
+'HOST': "186.78.244.236\DESKTOP-A7GEGG2\SQL2019TAB,14334",
+'USER': "sa",
+'PASSWORD': "Pvsa**2021",
+'NAME': "sqlite3",
+'OPTIONS': {"driver": "ODBC Driver 17 for SQL Server", 
+'host_is_server': True
+},
 }
+}
+
 
 
 # Password validation
