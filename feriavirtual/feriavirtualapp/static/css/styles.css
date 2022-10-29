@@ -136,6 +136,11 @@ nav a:hover{
     color: white;
     margin-bottom: 20px;
 }
+.warning{
+    background: #ff7323;
+    color: white;
+    margin-bottom: 20px;
+}
 .container-article{
     padding: 20px 0;
     margin: 20px 0px;
