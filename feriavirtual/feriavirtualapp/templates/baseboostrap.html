@@ -32,12 +32,13 @@
         <ul class="list-unstyled components">
             <p>Feria Virtual</p>
             {%if request.user.is_authenticated %}
-            <img src="{{ request.user.imagen.url }}">
-
+            <div style="margin:10px">
+              <img style="width: 300px; height: 225px; object-fit: cover; "class="img-perfil img-fluid img-thumbnail mt-4 mb-2" src="{{ request.user.imagen.url }}" alt="Generic placeholder image">
+            </div>
             <p>Usuario: {{ user.get_username }}</p>
             {% endif %}  
 
-            <li class="active">
+            <li class="nav-op active">
               {% if request.user.rol == "1"%}  <!--Productor -->
               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
               <a href="{% url 'ingresar-productos'  %}">Ingresar Productos</a>

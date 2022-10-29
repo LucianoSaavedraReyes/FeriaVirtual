@@ -187,6 +187,10 @@ article div img{
 .seguimiento-icons p{
     font-size: 42px;
 }
+.nav-op a:hover{
+    color: #7386D5;
+    background: #ededed;
+}
 @media (min-width: 600px) {
     form {
         margin: 25%;
