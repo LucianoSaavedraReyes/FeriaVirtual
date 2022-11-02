@@ -13,7 +13,7 @@
             <table class="col-xs-12" >
                 <tr>
                     <th>Tipo de fruta</th>           
-                    <th>Cantidad (kg)</th>
+                    <th>Cantidad (Cajas)</th>
                     <th>Fecha de subida</th>   
                     <th>Imagen</th>  
                     <th>Modificar</th>  
@@ -22,7 +22,7 @@
                 {% for p in prod %} 
                 <tr>
                     <td>{{ p.get_fruta_display }}</td>
-                    <td>{{ p.cantidad }} KG</td>
+                    <td>{{ p.cantidad }} Cajas</td>
                     <td><i class="clock"></i><time data-time="#">{{ p.fecha_subida }}</time></td>
                     <td> <img  src="{{ p.imagen.url }}"> </td>
                     <td> <button>Modificar</button> </td>

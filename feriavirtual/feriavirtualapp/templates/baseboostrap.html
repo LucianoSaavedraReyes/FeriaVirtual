@@ -19,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     
 </head>
-<body >
+<body class="body" id="body">
 <!-- Image and text -->
 
 <div class="wrapper">
@@ -32,10 +32,11 @@
         <ul class="list-unstyled components">
             <p>Feria Virtual</p>
             {%if request.user.is_authenticated %}
+            <p>@{{ user.get_username }}</p>
             <div style="margin:10px">
               <img style="width: 300px; height: 225px; object-fit: cover; "class="img-perfil img-fluid img-thumbnail mt-4 mb-2" src="{{ request.user.imagen.url }}" alt="Generic placeholder image">
             </div>
-            <p>Usuario: {{ user.get_username }}</p>
+
             {% endif %}  
 
             <li class="nav-op active">
@@ -44,37 +45,36 @@
               <a href="{% url 'ingresar-productos'  %}">Ingresar Productos</a>
               <a href="{% url 'mis-productos' %}" >Mis Productos</a>
               <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
-              {% endif %}  <!--Productor -->
+              {% endif %}  
 
-              {% if request.user.rol == "2"  %}  <!--clienteE -->
-
-              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
-              <a href="{% url 'Solicitud' %}">Solicitud</a>
-              <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
-              <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
-              {% endif %}  <!--clienteIE -->
-
-
-              {% if request.user.rol == "3"  %}  <!--clienteI -->
+              {% if request.user.rol == "2"  %}  <!--Cliente externo -->
 
               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
               <a href="{% url 'Solicitud' %}">Solicitud</a>
               <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
               <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
-              {% endif %}  <!--clienteIE -->
+              {% endif %}  
 
-              {% if request.user.rol == "4"  %}  <!--clienteI -->
+
+              {% if request.user.rol == "3"  %}  <!--Cliente interno -->
+
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'Solicitud' %}">Solicitud</a>
+              <a href="{% url 'Solicitudes' %}" >Solicitudes</a>
+              <a href="{% url 'notificacion' %}" > Notificaciones de pago</a>
+              {% endif %}  
+
+              {% if request.user.rol == "4"  %}  <!--Transportista -->
                <a href="{% url 'registrarTransporte' %}" >Registrar Transporte</a>
-              {% endif %}  <!--clienteIE -->
+              {% endif %}  
 
-              {% if request.user.rol == "5"  %}  <!--clienteI -->
+              {% if request.user.rol == "5"  %}  <!--Consultor -->
                <a href="{% url 'seguimiento' %}" >Seguimiento</a>
-              {% endif %}  <!--clienteIE -->
+              {% endif %}  
 
 
               {% if request.user.rol == "6"%}  <!--admin -->
               <a href="http://127.0.0.1:8000/admin/" >Sitio Administracion</a>
-              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
               <a href="{% url 'gestionContratos' %}" > Gestion de contratos</a>
               <a href="{% url 'register' %}" > Registrar Usuario</a>
               <a href="{% url 'Solicitud' %}">Solicitud</a>
@@ -83,9 +83,9 @@
               <a href="#" > Notificaciones de pago</a>
               {% endif %}  <!--admin -->
               
-              {% if request.user.rol == "7"  %}  <!--clienteI -->
-               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
-              {% endif %}  <!--clienteIE -->
+              {% if request.user.rol == "7"  %}  <!--Revisor de calidad -->
+
+              {% endif %}  
 
 
 
