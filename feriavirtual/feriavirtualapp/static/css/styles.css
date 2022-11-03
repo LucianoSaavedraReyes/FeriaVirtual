@@ -9,8 +9,12 @@
 .main{
     margin: 50px 0;
 }
-
-
+#body{
+    background-image: url("../../media/Fondos/fondo.png");
+}
+#content{
+    background-image: url("../../media/Fondos/fondo.png");
+}
 
 form {
 	padding: 50px 20px;

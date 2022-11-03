@@ -66,7 +66,7 @@ class User(AbstractUser):
     ("7", "Revisor de calidad"),
     )
     rol = models.CharField(max_length=50, choices = ROLES, null=True)
-    imagen = models.ImageField(upload_to="Perfil",default='default.png')
+    imagen = models.ImageField(upload_to="Perfil",default='Perfil/default.png')
     def __str__(self):
         return f'{self.username}'
 

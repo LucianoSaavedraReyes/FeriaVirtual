@@ -65,11 +65,11 @@
               {% endif %}  
 
               {% if request.user.rol == "4"  %}  <!--Transportista -->
-               <a href="{% url 'registrarTransporte' %}" >Registrar Transporte</a>
+              <a href="{% url 'registrarTransporte' %}" >Registrar Transporte</a>
               {% endif %}  
 
               {% if request.user.rol == "5"  %}  <!--Consultor -->
-               <a href="{% url 'seguimiento' %}" >Seguimiento</a>
+              <a href="{% url 'seguimiento' %}" >Seguimiento</a>
               {% endif %}  
 
 
