@@ -47,9 +47,6 @@ class FormProductos(forms.ModelForm):
     class Meta:
         model = Producto
         fields = ('producto','variedad','calibre','cantidad','precio', 'imagen',)
-        labels = {
-            'cantidad': ('Cantidad en cajas:'),
-        }
 class FormContratos(forms.ModelForm):
     class Meta:
         model = Contrato
