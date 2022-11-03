@@ -320,7 +320,6 @@ def modificarSolicitud (request, pk):
                                 topProductos.append(producto1)
                             else:
                                 print('Ningun productor tiene los productos suficientes para participar')
-                                messages.warning(request, f'Ningun productor tiene los productos suficientes para participar')
                         except Producto.DoesNotExist:
                             print("Producto no existe")
                     try:
@@ -340,7 +339,6 @@ def modificarSolicitud (request, pk):
                                 #cantidad actual ya no seria necesaria
                                 SolicitudPK.cantidad_actual = cantidadnecesaria
                                 SolicitudPK.EstadoSolicitud = form.cleaned_data['EstadoSolicitud']
-                                messages.success(request, f'Solicitud aprobada y enviada a subasta de transporte')
 
                                 
                     except Producto.MultipleObjectsReturned:   

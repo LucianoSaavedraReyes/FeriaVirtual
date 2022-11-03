@@ -9,12 +9,16 @@
 .main{
     margin: 50px 0;
 }
+<<<<<<< HEAD
 #body{
     background-image: url("../../media/Fondos/fondo.png");
 }
 #content{
     background-image: url("../../media/Fondos/fondo.png");
 }
+=======
+
+>>>>>>> 4146d5b0f93375a09ee5ce1781f986246cce32dc
 
 form {
 	padding: 50px 20px;
@@ -138,11 +142,6 @@ nav a:hover{
 }
 .error {
     background: #AB3444;
-    color: white;
-    margin-bottom: 20px;
-}
-.warning{
-    background: #ff7323;
     color: white;
     margin-bottom: 20px;
 }
